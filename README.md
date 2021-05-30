@@ -1,3 +1,5 @@
+You can track my progress on Trello https://trello.com/b/pGbtNSwq/personal-expanses
+
 # personal_expenses
 
 A new Flutter project.
