@@ -42,20 +42,24 @@ class MyHomePage extends StatelessWidget {
             children: transactions.map((transaction) {
               return Card(
                   child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.black)),
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      transaction.amount.toString(),
+                    ),
+                  ),
+                  Column(
                     children: [
-                      Container(
-                        child: Text(
-                          transaction.amount.toString(),
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          Text(transaction.title),
-                          Text(transaction.date.toString()),
-                        ],
-                      )
+                      Text(transaction.title),
+                      Text(transaction.date.toString()),
                     ],
-                  ));
+                  )
+                ],
+              ));
             }).toList(),
           )
         ],
