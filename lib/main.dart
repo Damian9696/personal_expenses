@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:personal_expenses/models/transaction.dart';
-import 'package:personal_expenses/widgets/user_transactions.dart';
+import 'package:personal_expenses/widgets/new_transaction.dart';
+import 'package:personal_expenses/widgets/transaction_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,18 +16,37 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final List<Transaction> transactions = [
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _transactions = [
     Transaction(
         id: "0", title: "New shoes", amount: 23.43, date: DateTime.now()),
     Transaction(id: "1", title: "Car", amount: 150.00, date: DateTime.now())
   ];
 
-  // String titleInput;
-  // String amountInput;
+  void _addNewTransaction(String newTitle, double newAmount) {
+    final newTransaction = Transaction(
+        id: DateTime.now().toString(),
+        title: newTitle,
+        amount: newAmount,
+        date: DateTime.now());
 
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+    setState(() {
+      _transactions.add(newTransaction);
+    });
+  }
+
+  void _startProcessOfAddNewTransaction(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return NewTransaction(_addNewTransaction);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +54,9 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Flutter App'),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.add))
+          IconButton(
+              onPressed: () => _startProcessOfAddNewTransaction(context),
+              icon: Icon(Icons.add))
         ],
       ),
       body: SingleChildScrollView(
@@ -50,12 +72,15 @@ class MyHomePage extends StatelessWidget {
                 elevation: 5,
               ),
             ),
-            UserTransactions(),
+            TransactionList(_transactions),
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(onPressed: (){},child: Icon(Icons.add),),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _startProcessOfAddNewTransaction(context),
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
