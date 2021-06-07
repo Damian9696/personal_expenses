@@ -20,7 +20,10 @@ class Chart extends StatelessWidget {
         }
       }
 
-      return {"day": DateFormat.E().format(weekDay), "amount": totalSum};
+      return {
+        "day": DateFormat.E().format(weekDay).substring(0, 1),
+        "amount": totalSum
+      };
     });
   }
 
@@ -30,7 +33,10 @@ class Chart extends StatelessWidget {
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Row(
-        children: [],
+        children: groupedTransactionValues.map((transaction) {
+          return Text(
+              "${transaction['day']} : ${transaction['amount'].toString()}");
+        }).toList(),
       ),
     );
   }
