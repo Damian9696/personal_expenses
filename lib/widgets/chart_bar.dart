@@ -22,9 +22,10 @@ class ChartBar extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    color: Color.fromRGBO(220, 220, 200, 1),
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(color: Colors.grey, width: 1.0),
+                  color: Color.fromRGBO(220, 220, 200, 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               FractionallySizedBox(
                 heightFactor: spendingPercentageOfTotal,
