@@ -39,15 +39,19 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactionValues.map((transaction) {
-          return ChartBar(
-              transaction['day'],
-              transaction['amount'],
-              totalSpending == 0.0
-                  ? 0.0
-                  : (transaction['amount'] as double) / totalSpending);
-        }).toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactionValues.map((transaction) {
+            return ChartBar(
+                transaction['day'],
+                transaction['amount'],
+                totalSpending == 0.0
+                    ? 0.0
+                    : (transaction['amount'] as double) / totalSpending);
+          }).toList(),
+        ),
       ),
     );
   }
