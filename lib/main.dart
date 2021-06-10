@@ -83,25 +83,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Flutter App',
-          // style: TextStyle(fontFamily: "OpenSans"),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () => _startProcessOfAddNewTransaction(context),
-              icon: Icon(Icons.add))
-        ],
+    final appBar = AppBar(
+      title: Text(
+        'Flutter App',
+        // style: TextStyle(fontFamily: "OpenSans"),
       ),
+      actions: [
+        IconButton(
+            onPressed: () => _startProcessOfAddNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_transactions, _deleteTransaction),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        appBar.preferredSize.height) *
+                    0.4,
+                child: Chart(_recentTransactions)),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        appBar.preferredSize.height) *
+                    0.6,
+                child: TransactionList(_transactions, _deleteTransaction)),
           ],
         ),
       ),
