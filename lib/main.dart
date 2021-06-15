@@ -133,44 +133,46 @@ class _MyHomePageState extends State<MyHomePage> {
             0.7,
         child: TransactionList(_transactions, _deleteTransaction));
 
-    final _body = Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (_isLandscape)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Show Chart"),
-              Switch.adaptive(
-                activeColor: Theme.of(context).accentColor,
-                value: _showChart,
-                onChanged: (val) {
-                  setState(() {
-                    _showChart = val;
-                  });
-                },
-              )
-            ],
-          ),
-        if (!_isLandscape)
-          Container(
-              height: (_mediaQuery.size.height -
-                      _mediaQuery.padding.top -
-                      _appBar.preferredSize.height) *
-                  0.3,
-              child: Chart(_recentTransactions)),
-        if (!_isLandscape) _transactionList,
-        if (_isLandscape)
-          _showChart
-              ? Container(
-                  height: (_mediaQuery.size.height -
-                          _mediaQuery.padding.top -
-                          _appBar.preferredSize.height) *
-                      0.7,
-                  child: Chart(_recentTransactions))
-              : _transactionList,
-      ],
+    final _body = SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (_isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Show Chart"),
+                Switch.adaptive(
+                  activeColor: Theme.of(context).accentColor,
+                  value: _showChart,
+                  onChanged: (val) {
+                    setState(() {
+                      _showChart = val;
+                    });
+                  },
+                )
+              ],
+            ),
+          if (!_isLandscape)
+            Container(
+                height: (_mediaQuery.size.height -
+                        _mediaQuery.padding.top -
+                        _appBar.preferredSize.height) *
+                    0.3,
+                child: Chart(_recentTransactions)),
+          if (!_isLandscape) _transactionList,
+          if (_isLandscape)
+            _showChart
+                ? Container(
+                    height: (_mediaQuery.size.height -
+                            _mediaQuery.padding.top -
+                            _appBar.preferredSize.height) *
+                        0.7,
+                    child: Chart(_recentTransactions))
+                : _transactionList,
+        ],
+      ),
     );
 
     return Platform.isIOS
