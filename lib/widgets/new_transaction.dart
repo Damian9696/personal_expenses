@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -80,23 +83,36 @@ class _NewTransactionState extends State<NewTransaction> {
                           ? "No date chosen"
                           : "Picked date: ${DateFormat("dd-MM-yyyy").format(_selectedDate)}"),
                     ),
-                    TextButton(
-                      child: Text(
-                        "Choose Date",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: _presentDatePicker,
-                    )
+                    Platform.isIOS
+                        ? CupertinoButton(
+                            child: Text(
+                              "Choose Date",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: _presentDatePicker,
+                          )
+                        : TextButton(
+                            child: Text(
+                              "Choose Date",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: _presentDatePicker,
+                          )
                   ],
                 ),
               ),
-              ElevatedButton(
-                onPressed: _submitData,
-                child: Text("Add transaction"),
-                style: TextButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    primary: Theme.of(context).textTheme.button.color),
-              )
+              Platform.isIOS
+                  ? CupertinoButton(
+                      onPressed: _submitData,
+                      child: Text("Add transaction"),
+                    )
+                  : ElevatedButton(
+                      onPressed: _submitData,
+                      child: Text("Add transaction"),
+                      style: TextButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          primary: Theme.of(context).textTheme.button.color),
+                    )
             ],
           ),
         ),
