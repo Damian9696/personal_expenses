@@ -121,6 +121,38 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
+  Widget _buildCupertinoAppBar() {
+    return CupertinoNavigationBar(
+      middle: Text(
+        'Flutter App',
+        // style: TextStyle(fontFamily: "OpenSans"),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            child: Icon(CupertinoIcons.add),
+            onTap: () => _startProcessOfAddNewTransaction(context),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMaterialAppBar() {
+    return AppBar(
+      title: Text(
+        'Flutter App',
+        // style: TextStyle(fontFamily: "OpenSans"),
+      ),
+      actions: [
+        IconButton(
+            onPressed: () => _startProcessOfAddNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+  }
+
   List<Widget> _buildPortraitContent(MediaQueryData mediaQueryData,
       AppBar appBar, Widget _transactionListWidget) {
     return [
@@ -140,33 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final _isLandscape = _mediaQuery.orientation == Orientation.landscape;
 
-    final PreferredSizeWidget _appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: Text(
-              'Flutter App',
-              // style: TextStyle(fontFamily: "OpenSans"),
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  child: Icon(CupertinoIcons.add),
-                  onTap: () => _startProcessOfAddNewTransaction(context),
-                )
-              ],
-            ),
-          )
-        : AppBar(
-            title: Text(
-              'Flutter App',
-              // style: TextStyle(fontFamily: "OpenSans"),
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () => _startProcessOfAddNewTransaction(context),
-                  icon: Icon(Icons.add))
-            ],
-          );
+    final PreferredSizeWidget _appBar =
+        Platform.isIOS ? _buildCupertinoAppBar() : _buildMaterialAppBar();
 
     final _transactionListWidget = Container(
         height: (_mediaQuery.size.height -
