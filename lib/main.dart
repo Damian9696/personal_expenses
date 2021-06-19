@@ -92,41 +92,90 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  List<Widget> _buildLandscapeContent(MediaQueryData mediaQueryData,
+      AppBar appBar, Widget _transactionListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Show Chart", style: Theme.of(context).textTheme.headline6),
+          Switch.adaptive(
+            activeColor: Theme.of(context).accentColor,
+            value: _showChart,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          )
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: (mediaQueryData.size.height -
+                      mediaQueryData.padding.top -
+                      appBar.preferredSize.height) *
+                  0.7,
+              child: Chart(_recentTransactions))
+          : _transactionListWidget
+    ];
+  }
+
+  Widget _buildCupertinoAppBar() {
+    return CupertinoNavigationBar(
+      middle: Text(
+        'Flutter App',
+        // style: TextStyle(fontFamily: "OpenSans"),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            child: Icon(CupertinoIcons.add),
+            onTap: () => _startProcessOfAddNewTransaction(context),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMaterialAppBar() {
+    return AppBar(
+      title: Text(
+        'Flutter App',
+        // style: TextStyle(fontFamily: "OpenSans"),
+      ),
+      actions: [
+        IconButton(
+            onPressed: () => _startProcessOfAddNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+  }
+
+  List<Widget> _buildPortraitContent(MediaQueryData mediaQueryData,
+      AppBar appBar, Widget _transactionListWidget) {
+    return [
+      Container(
+          height: (mediaQueryData.size.height -
+                  mediaQueryData.padding.top -
+                  appBar.preferredSize.height) *
+              0.3,
+          child: Chart(_recentTransactions)),
+      _transactionListWidget
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final _mediaQuery = MediaQuery.of(context);
 
     final _isLandscape = _mediaQuery.orientation == Orientation.landscape;
 
-    final PreferredSizeWidget _appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: Text(
-              'Flutter App',
-              // style: TextStyle(fontFamily: "OpenSans"),
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  child: Icon(CupertinoIcons.add),
-                  onTap: () => _startProcessOfAddNewTransaction(context),
-                )
-              ],
-            ),
-          )
-        : AppBar(
-            title: Text(
-              'Flutter App',
-              // style: TextStyle(fontFamily: "OpenSans"),
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () => _startProcessOfAddNewTransaction(context),
-                  icon: Icon(Icons.add))
-            ],
-          );
+    final PreferredSizeWidget _appBar =
+        Platform.isIOS ? _buildCupertinoAppBar() : _buildMaterialAppBar();
 
-    final _transactionList = Container(
+    final _transactionListWidget = Container(
         height: (_mediaQuery.size.height -
                 _mediaQuery.padding.top -
                 _appBar.preferredSize.height) *
@@ -139,39 +188,11 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (_isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Show Chart",
-                    style: Theme.of(context).textTheme.headline6),
-                Switch.adaptive(
-                  activeColor: Theme.of(context).accentColor,
-                  value: _showChart,
-                  onChanged: (val) {
-                    setState(() {
-                      _showChart = val;
-                    });
-                  },
-                )
-              ],
-            ),
+            ..._buildLandscapeContent(
+                _mediaQuery, _appBar, _transactionListWidget),
           if (!_isLandscape)
-            Container(
-                height: (_mediaQuery.size.height -
-                        _mediaQuery.padding.top -
-                        _appBar.preferredSize.height) *
-                    0.3,
-                child: Chart(_recentTransactions)),
-          if (!_isLandscape) _transactionList,
-          if (_isLandscape)
-            _showChart
-                ? Container(
-                    height: (_mediaQuery.size.height -
-                            _mediaQuery.padding.top -
-                            _appBar.preferredSize.height) *
-                        0.7,
-                    child: Chart(_recentTransactions))
-                : _transactionList,
+            ..._buildPortraitContent(
+                _mediaQuery, _appBar, _transactionListWidget),
         ],
       ),
     );
